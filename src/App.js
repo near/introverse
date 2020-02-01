@@ -78,7 +78,7 @@ class App extends Component {
   requestSignOut() {
     stashLocally("profile", null);
     stashLocally("connections", null);
-    this.state({
+    this.setState({
       profile: "there",
       login: false
     })
@@ -159,6 +159,7 @@ class App extends Component {
       <Router>
         <Switch>
           <Route
+            exact
             path="/"
             render={props => 
               <div className="App-header">
