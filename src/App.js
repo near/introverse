@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './assets/logo.svg';
 import nearlogo from './assets/gray_near_logo.svg';
 import near from './assets/near.svg';
+import Reader from './UploadCSV.js'
 import './App.css';
 
 class App extends Component {
@@ -9,12 +10,18 @@ class App extends Component {
     super(props);
     this.state = {
       login: false,
-      speech: null
+      speech: null,
+      profileName: "there",
+      addedProfile: false,
+      addedConnections: false
     }
     this.signedInFlow = this.signedInFlow.bind(this);
     this.requestSignIn = this.requestSignIn.bind(this);
     this.requestSignOut = this.requestSignOut.bind(this);
     this.signedOutFlow = this.signedOutFlow.bind(this);
+    this.handleConnectionsData = this.handleConnectionsData.bind(this);
+    this.handleProfileData = this.handleProfileData.bind(this);
+
   }
 
   componentDidMount() {
@@ -39,7 +46,7 @@ class App extends Component {
   }
 
   async requestSignIn() {
-    const appTitle = 'NEAR React template';
+    const appTitle = 'Sasha Services';
     await this.props.wallet.requestSignIn(
       window.nearConfig.contractName,
       appTitle
@@ -62,6 +69,23 @@ class App extends Component {
     })
   }
 
+  handleConnectionsData(data) {
+    console.log(data);
+    // pass data to the server
+    this.setState({
+      connections: data,
+      connectionsAdded: true
+    })
+  }
+
+  handleProfileData(data) {
+    let fullName = data[0]
+    this.setState({
+      profileName: fullName,
+      profileAdded: true
+    });
+  }
+
   render() {
     let style = {
       fontSize: "1.5rem",
@@ -72,14 +96,29 @@ class App extends Component {
       <div className="App-header">
         <div className="image-wrapper">
           <img className="logo" src={nearlogo} alt="NEAR logo" />
-          <p><span role="img" aria-label="fish">🐟</span> NEAR protocol is a new blockchain focused on developer productivity and useability!<span role="img" aria-label="fish">🐟</span></p>
-          <p><span role="img" aria-label="chain">⛓</span> This little react app is connected to blockchain right now. <span role="img" aria-label="chain">⛓</span></p>
-          <p style={style}>{this.state.speech}</p>
+          <p style={style}>Hi, {this.state.profileName}!</p>
+        </div>
+        <div>
+          {this.state.login ? 
+            <div style={{color:"black"}}>
+              <div>
+                {this.state.addedProfile ? "Profile Added" :
+                  <Reader label={"Add your Profile here"} handleData={this.handleProfileData} />
+                }
+                {!this.state.addedConnections && (
+                  <Reader label={"Add your Connections here"} handleData={this.handleConnectionsData} />
+                )}
+              </div>
+            </div>
+            :
+            "Login to upload your homies"
+          }
         </div>
         <div>
           {this.state.login ? <button onClick={this.requestSignOut}>Log out</button>
             : <button onClick={this.requestSignIn}>Log in with NEAR</button>}
         </div>
+
         <div>
           <div className="logo-wrapper">
             <img src={near} className="App-logo margin-logo" alt="logo" />
@@ -88,18 +127,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          <p><span role="img" aria-label="net">🕸</span> <a className="App-link" href="https://nearprotocol.com">NEAR Website</a> <span role="img" aria-label="net">🕸</span>
-          </p>
-          <p><span role="img" aria-label="book">📚</span><a className="App-link" href="https://docs.nearprotocol.com"> Learn from NEAR Documentation</a> <span role="img" aria-label="book">📚</span>
-          </p>
+
         </div>
       </div>
     )

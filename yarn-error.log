@@ -1,0 +1,97 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.17.3/libexec/bin/yarn.js add @material-ui
+
+PATH: 
+  /Users/peterdepaulo/Developer/google-cloud-sdk/bin:/Users/peterdepaulo/bin:/opt/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin
+
+Yarn version: 
+  1.17.3
+
+Node version: 
+  10.15.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@material-ui: Request "https://registry.yarnpkg.com/@material-ui" returned a 405
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:66839:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:140464:22)
+      at Request.emit (events.js:189:13)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:141436:10)
+      at Request.emit (events.js:189:13)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:141358:12)
+      at Object.onceWrapper (events.js:277:13)
+      at IncomingMessage.emit (events.js:194:15)
+      at endReadableNT (_stream_readable.js:1125:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
+
+npm manifest: 
+  {
+      "name": "introverse",
+      "version": "0.1.0",
+      "scripts": {
+          "build": "npm run build:contract && npm run build:web",
+          "build:contract": "mkdir -p out/ && gulp",
+          "build:web": "parcel build src/index.html --public-url ./",
+          "dev:deploy:contract": "near dev-deploy",
+          "deploy:contract": "near deploy",
+          "deploy:pages": "gh-pages -d dist/",
+          "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
+          "prestart": "npm run build:contract && npm run dev:deploy:contract",
+          "start": "CONTRACT_NAME=$(cat neardev/dev-account) parcel src/index.html",
+          "dev": "nodemon --watch assembly -e ts --exec 'npm run start'",
+          "test": "npm run build:contract && jest test --env=near-shell/test_environment"
+      },
+      "devDependencies": {
+          "@babel/preset-env": "^7.8.4",
+          "@babel/preset-react": "^7.8.3",
+          "babel-jest": "^25.1.0",
+          "gh-pages": "^2.2.0",
+          "gulp": "^4.0.2",
+          "jest": "^25.1.0",
+          "jest-environment-node": "^24.9.0",
+          "near-bindgen-as": "^1.2.0",
+          "near-runtime-ts": "^0.5.2",
+          "near-shell": "^0.20.1",
+          "nodemon": "^2.0.2",
+          "parcel-bundler": "^1.12.4",
+          "react-test-renderer": "^16.12.0"
+      },
+      "dependencies": {
+          "nearlib": "^0.21.0",
+          "react": "^16.12.0",
+          "react-dom": "^16.12.0",
+          "regenerator-runtime": "^0.13.3"
+      },
+      "eslintConfig": {
+          "extends": "react-app"
+      },
+      "jest": {
+          "moduleNameMapper": {
+              "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+              "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.js"
+          },
+          "setupFiles": [
+              "<rootDir>/src/jest.init.js"
+          ]
+      },
+      "browserslist": {
+          "production": [
+              ">0.2%",
+              "not dead",
+              "not op_mini all"
+          ],
+          "development": [
+              "last 1 chrome version",
+              "last 1 firefox version",
+              "last 1 safari version"
+          ]
+      }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

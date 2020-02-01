@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import getConfig from './config.js';
 import * as nearlib from 'nearlib';
+// This is to help with building
+import 'regenerator-runtime/runtime'
 
 // Initializing contract
 async function initContract() {
