@@ -14,13 +14,14 @@
         "react": "^16.11.0",
         "react-csv-reader": "^2.0.2",
         "react-dom": "^16.11.0",
+        "react-force-graph-2d": "^1.13.7",
         "react-router-dom": "^5.1.2",
         "react-scripts": "3.3.0",
         "react-tabs": "3.1.0",
         "tweetnacl": "^1.0.2"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "react-scripts start --no-cache",
         "build:frontend": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",

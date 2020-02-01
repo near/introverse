@@ -5,7 +5,7 @@ import introverselogo from './assets/logo.png';
 import introverselogo2 from './assets/logo2.png';
 import near from './assets/near.svg';
 import Reader from './UploadCSV.js'
-import Connections from './UploadCSV.js'
+import Connections from './Connections.js'
 import './App.css';
 import { stashLocally, grabFromStorage } from './utils.js'
 
