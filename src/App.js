@@ -102,12 +102,12 @@ class App extends Component {
           {this.state.login ? 
             <div style={{color:"black"}}>
               <div>
-                {this.state.addedProfile ? "Profile Added" :
-                  <Reader label={"Add your Profile here"} handleData={this.handleProfileData} />
+                {this.state.profileAdded ? "Profile Added" :
+                  <Reader label={"Add your Profile here: "} handleData={this.handleProfileData} />
                 }
-                {!this.state.addedConnections && (
-                  <Reader label={"Add your Connections here"} handleData={this.handleConnectionsData} />
-                )}
+                {this.state.connectionsAdded ? "Connections Added" : 
+                  <Reader label={"Add your Connections here: "} handleData={this.handleConnectionsData} />
+                }
               </div>
             </div>
             :

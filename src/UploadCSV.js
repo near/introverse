@@ -27,7 +27,7 @@ const reader = props => {
     <div className="container">
       <CSVReader
         cssClass="react-csv-input"
-        label="Upload some sht"
+        label={props.label}
         onFileLoaded={handleForce}
         parserOptions={parseOptions}
       />
