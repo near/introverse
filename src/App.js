@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import logo from './assets/logo.svg';
 import introverselogo from './assets/logo.png';
+import introverselogo2 from './assets/logo2.png';
 import near from './assets/near.svg';
 import Reader from './UploadCSV.js'
 import Connections from './UploadCSV.js'
@@ -78,6 +79,10 @@ class App extends Component {
     stashLocally("profile", null);
     stashLocally("connections", null);
     stashLocally("numUploaded", 0);
+    this.setState({
+      profile: "there",
+      login: false
+    })
     this.props.wallet.signOut();
     setTimeout(this.signedOutFlow, 500);
     console.log("after sign out", this.props.wallet.isSignedIn())
@@ -156,14 +161,20 @@ class App extends Component {
       <Router>
         <Switch>
           <Route
+            exact
             path="/"
             render={props => 
               <div className="App-header">
                 <div className="image-wrapper">
-                  <img className="logo" src={introverselogo} alt="INTROVERSE logo" />
+                  {this.state.login ?
+                    <img className="logo" src={introverselogo2} alt="INTROVERSE logo" />
+                  :
+                    <img className="logo" src={introverselogo} alt="INTROVERSE logo" />
+                  }
                   <p style={style}>Hi, {this.state.profileName}!</p>
+
                   {this.state.connectionsAdded && (
-                    <Link to="/connections" />
+                    <Link to="/connections"> View My Connections </Link>
                   )}
                 </div>
                 <div>

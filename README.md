@@ -1,12 +1,4 @@
-<br />
-<br />
-
-<p>
-<img src="https://nearprotocol.com/wp-content/themes/near-19/assets/img/logo.svg?t=1553011311" width="240">
-</p>
-
-<br />
-<br />
+# Welcome to the ~INTROVERSE~ sasha.services
 
 ## Template for NEAR dapps
 
