@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@material-ui/styles": "^4.9.0",
         "gh-pages": "^2.2.0",
         "js-cookie": "^2.2.1",
         "near-bindgen-as": "^1.2.0",
@@ -10,11 +11,12 @@
         "near-shell": "^0.20.1",
         "nearlib": "^0.21.0",
         "react": "^16.11.0",
+        "react-csv-reader": "^2.0.2",
         "react-dom": "^16.11.0",
+        "react-router-dom": "^5.1.2",
         "react-scripts": "3.3.0",
         "react-tabs": "3.1.0",
-        "tweetnacl": "^1.0.2",
-        "react-csv-reader": "^2.0.2"
+        "tweetnacl": "^1.0.2"
     },
     "scripts": {
         "start": "react-scripts start",

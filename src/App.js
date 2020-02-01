@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import logo from './assets/logo.svg';
 import introverselogo from './assets/logo.png';
 import near from './assets/near.svg';
 import Reader from './UploadCSV.js'
+import Connections from './UploadCSV.js'
 import './App.css';
+import { stashLocally, grabFromStorage } from './utils.js'
+
+// import { makeStyles } from '@material-ui/styles';
 
 class App extends Component {
   constructor(props) {
@@ -11,9 +16,7 @@ class App extends Component {
     this.state = {
       login: false,
       speech: null,
-      profileName: "there",
-      addedProfile: false,
-      addedConnections: false
+      profileName: "there"
     }
     this.signedInFlow = this.signedInFlow.bind(this);
     this.requestSignIn = this.requestSignIn.bind(this);
@@ -21,10 +24,20 @@ class App extends Component {
     this.signedOutFlow = this.signedOutFlow.bind(this);
     this.handleConnectionsData = this.handleConnectionsData.bind(this);
     this.handleProfileData = this.handleProfileData.bind(this);
+  }
 
+  init() {
+    let profileInit = !!grabFromStorage("profile");
+    let connectionsInit = !!grabFromStorage("connections");
+    console.log(profileInit, connectionsInit)
+    this.setState({
+      profileAdded: profileInit,
+      connectionsAdded: connectionsInit
+    })
   }
 
   componentDidMount() {
+    this.init();
     let loggedIn = this.props.wallet.isSignedIn();
     if (loggedIn) {
       this.signedInFlow();
@@ -46,7 +59,7 @@ class App extends Component {
   }
 
   async requestSignIn() {
-    const appTitle = 'Sasha Services';
+    const appTitle = "Sasha's Services";
     await this.props.wallet.requestSignIn(
       window.nearConfig.contractName,
       appTitle
@@ -54,6 +67,8 @@ class App extends Component {
   }
 
   requestSignOut() {
+    stashLocally("profile", null);
+    stashLocally("connections", null);
     this.props.wallet.signOut();
     setTimeout(this.signedOutFlow, 500);
     console.log("after sign out", this.props.wallet.isSignedIn())
@@ -70,20 +85,27 @@ class App extends Component {
   }
 
   handleConnectionsData(data) {
-    console.log(data);
+    // console.log(data);
     // pass data to the server
+    if (!!data){
     this.setState({
       connections: data,
       connectionsAdded: true
-    })
+    });
+      stashLocally("connections", data);
+    }
+
   }
 
   handleProfileData(data) {
     let fullName = data[0]
-    this.setState({
-      profileName: fullName,
-      profileAdded: true
-    });
+    if (!!data){
+      this.setState({
+        profileName: fullName,
+        profileAdded: true
+      });
+      stashLocally("profile", fullName);
+    }
   }
 
   render() {
@@ -93,33 +115,47 @@ class App extends Component {
       textShadow: "1px 1px #D1CCBD"
     }
     return (
-      <div className="App-header">
-        <div className="image-wrapper">
-          <img className="logo" src={introverselogo} alt="INTROVERSE logo" />
-          <p style={style}>Hi, {this.state.profileName}!</p>
-        </div>
-        <div>
-          {this.state.login ? 
-            <div style={{color:"black"}}>
-              <div>
-                {this.state.profileAdded ? "Profile Added" :
-                  <Reader label={"Add your Profile here: "} handleData={this.handleProfileData} />
-                }
-                {this.state.connectionsAdded ? "Connections Added" : 
-                  <Reader label={"Add your Connections here: "} handleData={this.handleConnectionsData} />
-                }
-              </div>
-            </div>
-            :
-            "Login to upload your homies"
-          }
-        </div>
-        <div>
-          {this.state.login ? <button onClick={this.requestSignOut}>Log out</button>
-            : <button onClick={this.requestSignIn}>Log in with NEAR</button>}
-        </div>
-        
-      </div>
+      <Router>
+        <Switch>
+          <Route
+            path="/"
+            render={props => 
+              <div className="App-header">
+                <div className="image-wrapper">
+                  <img className="logo" src={introverselogo} alt="INTROVERSE logo" />
+                  <p style={style}>Hi, {this.state.profileName}!</p>
+                  {this.state.connectionsAdded && (
+                    <Link to="/connections" />
+                  )}
+                </div>
+                <div>
+                  {this.state.login ? 
+                    <div style={{color:"black"}}>
+                      
+                      <div>
+                        {this.state.profileAdded ? <p>"Profile Added"</p> :
+                          <Reader label={"Add your Profile here: "} handleData={this.handleProfileData} />
+                        }
+                        {this.state.connectionsAdded ? <p>"Connections Added"</p> : 
+                          <Reader label={"Add your Connections here: "} handleData={this.handleConnectionsData} />
+                        }
+                      </div>
+                    </div>
+                    :
+                    "Login to upload your homies"
+                  }
+                </div>
+                <div>
+                  {this.state.login ? <button onClick={this.requestSignOut}>Log out</button>
+                    : <button onClick={this.requestSignIn}>Log in with NEAR</button>}
+                </div>
+
+              </div>} />
+          <Route 
+            path="/connections"
+            render={props => <Connections {...props}/>} />
+        </Switch> 
+      </Router>
     )
   }
 

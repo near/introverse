@@ -45,6 +45,21 @@
   justify-content: center;
 }
 
+label {
+  margin: 10px;
+}
+
+.react-csv-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.csv-input {
+  margin: 10px;
+}
+
 .logo {
   width: 100%;
 }
