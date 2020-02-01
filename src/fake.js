@@ -1,4 +1,4 @@
-export fakeData = [
+export const fakeData = [
   ["Peter DePaulo", "Turtle Forbes", "Chortle Corporate"]
   ["Peter DePaulo", "B", "C"]
   ["Peter DePaulo", "Gorpy Norpy", "D" "Sasha"]
