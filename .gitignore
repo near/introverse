@@ -2,3 +2,6 @@ node_modules
 .cache
 .idea
 yarn-error.log
+.DS_Store
+*/.DS_Store
+public/.DS_Store

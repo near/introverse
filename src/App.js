@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './assets/logo.svg';
-import nearlogo from './assets/gray_near_logo.svg';
+import introverselogo from './assets/logo.png';
 import near from './assets/near.svg';
 import Reader from './UploadCSV.js'
 import './App.css';
@@ -95,7 +95,7 @@ class App extends Component {
     return (
       <div className="App-header">
         <div className="image-wrapper">
-          <img className="logo" src={nearlogo} alt="NEAR logo" />
+          <img className="logo" src={introverselogo} alt="INTROVERSE logo" />
           <p style={style}>Hi, {this.state.profileName}!</p>
         </div>
         <div>
@@ -118,17 +118,7 @@ class App extends Component {
           {this.state.login ? <button onClick={this.requestSignOut}>Log out</button>
             : <button onClick={this.requestSignIn}>Log in with NEAR</button>}
         </div>
-
-        <div>
-          <div className="logo-wrapper">
-            <img src={near} className="App-logo margin-logo" alt="logo" />
-            <img src={logo} className="App-logo" alt="logo" />
-          </div>
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-
-        </div>
+        
       </div>
     )
   }
