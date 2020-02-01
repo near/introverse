@@ -10,12 +10,21 @@ class Connections extends Component {
     super(props)
     // let _data = this.fuckIt(fakeData);
     // console.log(_data);
-
+    this.state ={
+      showData:false
+    }
     this.fuckIt = this.fuckIt.bind(this);
+    this.showTheData = this.showTheData.bind(this);
   }
 
   componentDidMount() {
     console.log(this.fuckIt(fakeData));
+  }
+
+  showTheData(){
+    this.setState({
+      showData:true
+    })
   }
 
   fuckIt(data) {
@@ -72,8 +81,11 @@ class Connections extends Component {
 
   render() {
     return (
+      
       <div className="container">
-        <Link to="/">Go Back</Link>
+        <Link to="/">Go Back         </Link>
+        <button onClick={this.showTheData}>Show Data</button>
+        {this.state.showData ? 
         <List>
           {fakeData.map(connections => {
             const labelId = `list-label-${connections.join()}`;
@@ -85,6 +97,7 @@ class Connections extends Component {
           })
           }
         </List>
+        : ""}
         <ForceGraph2D
           graphData={this.fuckIt(fakeData)}
         />, 
