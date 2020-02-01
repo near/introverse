@@ -78,6 +78,7 @@ class App extends Component {
   requestSignOut() {
     stashLocally("profile", null);
     stashLocally("connections", null);
+    stashLocally("numUploaded", 0);
     this.setState({
       profile: "there",
       login: false
@@ -102,12 +103,13 @@ class App extends Component {
       this.uploading = true;
       console.log("Uploading your data...");
       let p = Promise.resolve();
-      for (let i = 0; i < this.state.connections.length; i += 50) {
+      for (let i = grabFromStorage("numUploaded"); i < this.state.connections.length; i += 50) {
         p = p.then(() => this.props.contract.add_edges({
           fullname: this.state.profileName,
           edges: this.state.connections.slice(i, i + 50),
         }, GAS).then(() => {
           console.log("Uploading " + i + " out of " + this.state.connections.length +  " DONE!!!");
+          stashLocally("numUploaded", i + 50);
         }));
       }
       p.then(() => {
