@@ -1,4 +1,4 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'nearapp'; /* TODO: fill this in! */
+const CONTRACT_NAME = 'introverse';
 
 function getConfig(env) {
     switch (env) {
