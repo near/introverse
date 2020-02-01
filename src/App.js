@@ -10,6 +10,7 @@ import './App.css';
 import { stashLocally, grabFromStorage } from './utils.js'
 
 // import { makeStyles } from '@material-ui/styles';
+const GAS = 2_000_000_000_000_000;
 
 class App extends Component {
   constructor(props) {
@@ -25,22 +26,24 @@ class App extends Component {
     this.signedOutFlow = this.signedOutFlow.bind(this);
     this.handleConnectionsData = this.handleConnectionsData.bind(this);
     this.handleProfileData = this.handleProfileData.bind(this);
+    this.uploading = false;
   }
 
   init() {
-    let fullName = grabFromStorage("profile");
-    let profileInit = !!fullName;
-    let connectionsInit = !!grabFromStorage("connections");
-    console.log(profileInit, connectionsInit)
+    let profile = grabFromStorage("profile");
+    let connections = grabFromStorage("connections");
+    let graphUploaded = !!grabFromStorage("graphUploaded");
+
+    console.log(profile, connections)
     this.setState({
-      profileAdded: profileInit,
-      connectionsAdded: connectionsInit
-    });
-    if (fullName) {
-      this.setState({
-        profileName: fullName
-      });
-    }
+      profileAdded: !!profile,
+      profile: profile,
+      connectionsAdded: !!connections,
+      connections: connections,
+      graphUploaded,
+    }, () => {
+      this.handleData();
+    })
   }
 
   componentDidMount() {
@@ -62,13 +65,12 @@ class App extends Component {
     if (window.location.search.includes("account_id")) {
       window.location.replace(window.location.origin + window.location.pathname)
     }
-    this.setState({speech: "The King's Speech"});
   }
 
   async requestSignIn() {
     const appTitle = "Sasha's Services";
     await this.props.wallet.requestSignIn(
-      window.nearConfig.contractName,
+      "", // window.nearConfig.contractName,  // Uncomment once the allowance is large enough
       appTitle
     )
   }
@@ -95,15 +97,41 @@ class App extends Component {
     })
   }
 
+  handleData() {
+    if (this.state.connections && this.state.profileName && !this.uploading && !this.state.graphUploaded) {
+      this.uploading = true;
+      console.log("Uploading your data...");
+      let p = Promise.resolve();
+      for (let i = 0; i < this.state.connections.length; i += 50) {
+        p = p.then(() => this.props.contract.add_edges({
+          fullname: this.state.profileName,
+          edges: this.state.connections.slice(i, i + 50),
+        }, GAS).then(() => {
+          console.log("Uploading " + i + " out of " + this.state.connections.length +  " DONE!!!");
+        }));
+      }
+      p.then(() => {
+        console.log("all done");
+        stashLocally("graphUploaded", true);
+        this.setState({
+          graphUploaded: true,
+        })
+      })
+    }
+  }
+
   handleConnectionsData(data) {
     // console.log(data);
     // pass data to the server
     if (!!data){
-    this.setState({
-      connections: data,
-      connectionsAdded: true
-    });
+      this.setState({
+        connections: data,
+        connectionsAdded: true
+      }, () => {
+        this.handleData();
+      });
       stashLocally("connections", data);
+      this.handleData();
     }
 
   }
@@ -114,6 +142,8 @@ class App extends Component {
       this.setState({
         profileName: fullName,
         profileAdded: true
+      }, () => {
+        this.handleData();
       });
       stashLocally("profile", fullName);
     }
