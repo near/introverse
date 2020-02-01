@@ -1,58 +1,32 @@
 {
     "name": "introverse",
     "version": "0.1.0",
-    "scripts": {
-        "build": "npm run build:contract && npm run build:web",
-        "build:contract": "mkdir -p out/ && gulp",
-        "build:web": "parcel build src/index.html --public-url ./",
-        "dev:deploy:contract": "near dev-deploy",
-        "deploy:contract": "near deploy",
-        "deploy:pages": "gh-pages -d dist/",
-        "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
-        "prestart": "npm run build:contract && npm run dev:deploy:contract",
-        "start": "CONTRACT_NAME=$(cat neardev/dev-account) parcel src/index.html",
-        "dev": "nodemon --watch assembly -e ts --exec 'npm run start'",
-        "test": "npm run build:contract && jest test --env=near-shell/test_environment"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.4.5",
-        "@babel/plugin-proposal-class-properties": "^7.4.4",
-        "@babel/plugin-transform-runtime": "^7.4.4",
-        "@babel/preset-env": "^7.8.4",
-        "@babel/preset-react": "^7.8.3",
-        "babel-jest": "^25.1.0",
+    "private": true,
+    "dependencies": {
         "gh-pages": "^2.2.0",
-        "gulp": "^4.0.2",
-        "jest": "^25.1.0",
-        "jest-environment-node": "^24.9.0",
+        "js-cookie": "^2.2.1",
         "near-bindgen-as": "^1.2.0",
         "near-runtime-ts": "^0.5.2",
         "near-shell": "^0.20.1",
-        "nodemon": "^2.0.2",
-        "parcel-bundler": "^1.12.4",
-        "react-test-renderer": "^16.12.0"
-    },
-    "dependencies": {
-        "@material-ui/core": "^4.0.0",
-        "@material-ui/icons": "^4.5.1",
-        "@material-ui/styles": "^4.9.0",
         "nearlib": "^0.21.0",
-        "react": "^16.8.0",
-        "react-csv-reader": "^2.0.2",
-        "react-dom": "^16.8.0",
-        "regenerator-runtime": "^0.13.3"
+        "react": "^16.11.0",
+        "react-dom": "^16.11.0",
+        "react-scripts": "3.3.0",
+        "react-tabs": "3.1.0",
+        "tweetnacl": "^1.0.2",
+        "react-csv-reader": "^2.0.2"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build:frontend": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "deploy:pages": "gh-pages -d build",
+        "deploy": "npm run deploy:pages",
+        "build": "react-scripts build"
     },
     "eslintConfig": {
         "extends": "react-app"
-    },
-    "jest": {
-        "moduleNameMapper": {
-            "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
-            "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.js"
-        },
-        "setupFiles": [
-            "<rootDir>/src/jest.init.js"
-        ]
     },
     "browserslist": {
         "production": [
